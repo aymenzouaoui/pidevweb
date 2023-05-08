@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Colis index{% endblock %}
+
+{% block body %}
+<!-- ======= Breadcrumbs ======= -->
+    <div class="breadcrumbs d-flex align-items-center" style="background-image: url('assets/img/contact-header.jpg');">
+      <div class="container position-relative d-flex flex-column align-items-center">
+
+        <h2>Colis</h2>
+        <ol>
+          <li><a href="index.html">Accueil</a></li>
+          <li>Colis</li>
+        </ol>
+
+      </div>
+    </div><!-- End Breadcrumbs -->
+    <h1>Colis index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom Expediteur</th>
+                <th>Adresse Expediteur</th>
+                <th>Nom Destinataire</th>
+                <th>Adresse Destinataire</th>
+                <th>Poids</th>
+                <th>Statut</th>
+                <th>Date Expedition</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for coli in colis %}
+            <tr>
+                <td>{{ coli.id }}</td>
+                <td>{{ coli.nomExpediteur }}</td>
+                <td>{{ coli.adresseExpediteur }}</td>
+                <td>{{ coli.nomDestinataire }}</td>
+                <td>{{ coli.adresseDestinataire }}</td>
+                <td>{{ coli.poids }}</td>
+                <td>{{ coli.statut }}</td>
+                <td>{{ coli.dateExpedition ? coli.dateExpedition|date('Y-m-d') : '' }}</td>
+                <td>
+                    <a class="btn btn-primary btn-sm" href="{{ path('app_colis_show', {'id': coli.id}) }}">Afficher</a>
+                    <a class="btn btn-primary btn-sm" href="{{ path('app_colis_edit', {'id': coli.id}) }}">Modifier</a>
+                    <a class="btn btn-primary btn-sm" href="{{ path('app_colis_map') }}">Afficher la position du colis</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="9">Aucun colis trouvé</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_colis_new') }}">Ajouter un nouveau colis </a>
+{% endblock %}

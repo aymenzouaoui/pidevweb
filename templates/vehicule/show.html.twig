@@ -1,0 +1,106 @@
+{% extends 'baseadmin.html.twig' %}
+
+{% block title %}Vehicule{% endblock %}
+{% block stylesheets %}
+{{parent()}}
+    <style>
+        #calendrier{
+            width: 50%;
+            margin: auto;
+        }
+    </style>
+{% endblock %}
+{% block body %}
+    <h1>Vehicule</h1>
+
+    <table class="table">
+       <tbody>
+    <tr>
+        <th>Type</th>
+        <td>{{ vehicule.type }}</td>
+        <th></th>
+        <td rowspan="10"><img style="width:250px;height:250px" src="{{ vehicule.img }}"></td>
+    </tr>
+    <tr>
+        <th>Matricule</th>
+        <td>{{ vehicule.immat }}</td>
+    </tr>
+    <tr>
+        <th>Etat</th>
+        <td>{{ vehicule.etat ? 'Reservé' :'Disponible' }}</td>
+    </tr>
+    <tr>
+        <th>Kilometrage</th>
+        <td>{{ vehicule.kilometrage }}</td>
+    </tr>
+    <tr>
+        <th>Chevaux</th>
+        <td>{{ vehicule.chevaux }}</td>
+    </tr>
+    <tr>
+        <th>Marque</th>
+        <td>{{ vehicule.marque }}</td>
+    </tr>
+    <tr>
+        <th>Modele</th>
+        <td>{{ vehicule.modele }}</td>
+    </tr>
+    <tr>
+        <th>Lieu de prise en charge</th>
+        <td>{{ vehicule.lpec }}</td>
+    </tr>
+    <tr>
+        <th>Prix</th>
+        <td>{{ vehicule.prix }}</td>
+    </tr>
+    <tr>
+        <th></th>
+        <td></td>
+    </tr>
+</tbody>
+
+    </table>
+<div id="calendrier"></div> 
+    <a href="{{ path('app_vehicule_index') }}">Retourner</a>
+
+    <a href="{{ path('app_vehicule_edit', {'idV': vehicule.idV}) }}">Modifier</a>
+
+    {{ include('vehicule/_delete_form.html.twig') }}
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    window.onload = () => {  
+            let calendarElt = document.querySelector("#calendrier")
+            let calendar = new FullCalendar.Calendar(calendarElt, {
+            initialView: 'dayGridMonth',
+            locale: 'fr',
+            timeZone: 'Europe/Paris',
+            headerToolbar: {
+            },
+            events: {{ data|raw }},
+            editable: true,
+            eventResizableFromStart: true
+        })
+        calendar.on('eventChange', (e) => {
+            let url = `/api/${e.event.id}/edit`
+            let donnees = {
+                "title": e.event.title,
+                "description": e.event.extendedProps.description,
+                "start": e.event.start,
+                "end": e.event.end,
+                "backgroundColor": e.event.backgroundColor,
+                "borderColor": e.event.borderColor,
+                "textColor": e.event.textColor,
+                "allDay": e.event.allDay
+            }
+            
+            let xhr = new XMLHttpRequest
+            xhr.open("PUT", url)
+            xhr.send(JSON.stringify(donnees))
+        })
+        calendar.render()
+    }
+</script>
+{{parent()}}
+{% endblock %}

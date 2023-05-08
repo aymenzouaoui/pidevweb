@@ -1,0 +1,106 @@
+{% extends 'baseadmin.html.twig' %}
+
+
+
+{% block title %}Liste des annonce{% endblock %}
+
+		{% block stylesheets %}
+
+			{{ encore_entry_link_tags('app') }}
+			<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+   			 <link rel="stylesheet" href="{{ asset('bundles/mercuryseriesflashy/css/flashy.css') }}">
+{{parent()}}
+	<link href="{{asset('front/assets/css/ann.css')}}" rel="stylesheet">
+		{% endblock %}
+
+{% block body %}
+
+<div class="event-schedule-area-two bg-color pad100">
+    <div class="container">
+       
+        <!-- row end-->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade active show" id="home" role="tabpanel">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                         <th class="text-center" scope="col">Type</th>
+                                          <th scope="col">Ville de depart</th>
+                                          <th scope="col">Ville d'arrivée</th>
+                                          <th scope="col">Date de depart</th>
+                                          <th scope="col">Date d'arrivée</th>
+                                          <th scope="col">Description</th>
+                                        
+                                        <th class="text-center" scope="col">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {% for annonce in annonces %}
+                                    <tr class="inner-box">
+                                         <th scope="row">
+                                            <div class="event-date">
+                                                {{annonce.type}}
+                                            </div>
+                                        </th>
+                                        <td>
+                                          <div class="event-wrap">
+                                                 <h4>{{annonce.villeDep}}</h4>
+                                                            
+                                             </div>
+                                        </td>
+                                        <td>
+                                          <div class="event-wrap">
+                                        <h4>{{annonce.villeArr}}</h4>
+                                            </div>
+                                        </td>
+
+                                         <td>
+                                          <div class="event-wrap">
+                                        <h4>{{annonce.DateDep}}</h4>
+                                            </div>
+                                        </td>
+
+                                         <td>
+                                          <div class="event-wrap">
+                                        <h4>{{annonce.DateArr}}</h4>
+                                            </div>
+                                        </td>
+                                        <td>
+                                        <div class="event-wrap">
+                                                 
+                                                 <h4>{{annonce.description}}</h4> 
+                                         </div>
+                                         </td>
+                                        <td>
+                                            <div class="primary-btn">
+                                                <a href="{{ path('app_annonces_delete', {'id': annonce.id}) }}" class="btn btn-danger">
+                                                <i class="fa fa-trash"></i> Supprimer
+                                                </a>
+
+                                            </div>
+                                        </td>
+                                              </tr>
+                                             {% endfor %}  
+                                             
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                   
+                     <div class="pagination">
+    {{ knp_pagination_render(annonces) }}
+</div>
+                </div>    
+            </div>
+            <!-- /col end-->
+        </div>
+        <!-- /row end-->
+    </div>
+</div>
+
+
+{% endblock %}

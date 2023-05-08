@@ -1,0 +1,96 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Documentexpedition index{% endblock %}
+
+{% block body %}
+<!-- ======= Breadcrumbs ======= -->
+    <div class="breadcrumbs d-flex align-items-center" style="background-image: url('assets/img/contact-header.jpg');">
+      <div class="container position-relative d-flex flex-column align-items-center">
+
+        <h2>Document d'expedition</h2>
+        <ol>
+          <li><a href="{{path('app_accueil')}}">Accueil</a></li>
+          <li>Document d'expedition</li>
+        </ol>
+
+      </div>
+    </div><!-- End Breadcrumbs -->
+    <h1>Documentexpedition index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Datesignature</th>
+                <th>Statut</th>
+                <th>Description</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for documentexpedition in documentexpeditions %}
+            <tr>
+                <td>{{ documentexpedition.id }}</td>
+                <td>{{ documentexpedition.datesignature ? documentexpedition.datesignature|date('Y-m-d') : '' }}</td>
+                <td>{{ documentexpedition.statut }}</td>
+                <td>{{ documentexpedition.description }}</td>
+
+                <td>
+                    <a class="btn btn-primary btn-sm" href="{{ path('app_documentexpedition_show', {'id': documentexpedition.id}) }}">Afficher</a>
+                    <a class="btn btn-primary btn-sm" href="{{ path('app_documentexpedition_edit', {'id': documentexpedition.id}) }}">Modifier</a>
+                    <a class="btn btn-primary btn-sm" href="{{ path('app_documentexpedition_print', {'id': documentexpedition.id}) }}">imprimer</a> 
+                    <a class="btn btn-primary btn-sm" href="{{ path('app_map') }}">Voir la position</a>                
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">Aucun element</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-primary btn-sm" href="{{ path('app_documentexpedition_new') }}">Ajouter un document d'expedition</a>
+
+{% block calendar %}
+<div style='display: flex; justify-content: center;'>
+  <div id='calendar' style='max-width: 1000px'></div>
+</div>
+<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.css' />
+
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.5/index.global.min.js'></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+        headerToolbar: {
+        left: "prev,next today",
+        center: "title",
+        right: "dayGridMonth,timeGridWeek,timeGridDay,listMonth"
+    },
+        
+      initialView: 'dayGridMonth',
+      aspectRatio: 1.5,
+      contentHeight: 500,
+      events: {{ events|raw }},
+      eventClick: function(info) {
+        // get the ID of the clicked shipment
+        var shipmentId = info.event.title.match(/\d+/)[0];
+        
+        // get the details of the shipment using an AJAX request
+        $.get("/colis/" + shipmentId, function(data) {
+          // display the details in an alert
+          var shipment = JSON.parse(data);
+          alert("Nom expéditeur: " + shipment.nomExpediteur + "\n" +
+                "Adresse expéditeur: " + shipment.adresseExpediteur + "\n" +
+                "Nom destinataire: " + shipment.nomDestinataire + "\n" +
+                "Adresse destinataire: " + shipment.adresseDestinataire + "\n" +
+                "Poids: " + shipment.poids + " kg");
+        });
+      }
+    });
+    calendar.render();
+  });
+</script>
+{% endblock %}
+{% endblock %}

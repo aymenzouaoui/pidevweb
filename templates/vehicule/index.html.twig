@@ -1,0 +1,51 @@
+{% extends 'baseadmin.html.twig' %}
+
+{% block title %}Vehicule index{% endblock %}
+
+{% block body %}
+    <h1>Liste des vehicules</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Type</th>
+                <th>Matricule</th>
+                <th>Etat</th>
+                <th>Kilometrage</th>
+                <th>Chevaux</th>
+                <th>Marque</th>
+                <th>Modele</th>
+                <th>Lieu de prise en charge </th>
+                <th>Prix</th>
+                <th>Img</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for vehicule in vehicules %}
+            <tr>
+                <td>{{ vehicule.type }}</td>
+                <td>{{ vehicule.immat }}</td>
+                <td>{{ vehicule.etat ?  'Reservé' :'Disponible'  }}</td>
+                <td>{{ vehicule.kilometrage }}</td>
+                <td>{{ vehicule.chevaux }}</td>
+                <td>{{ vehicule.marque }}</td>
+                <td>{{ vehicule.modele }}</td>
+                <td>{{ vehicule.lpec }}</td>
+                <td>{{ vehicule.prix }}</td>
+                <td><img style="width:75px;height:75px" src="{{ vehicule.img }}"> </td>
+
+                <td>
+                    <a href="{{ path('app_vehicule_show', {'idV': vehicule.idV}) }}">Afficher</a>
+                    <a href="{{ path('app_vehicule_edit', {'idV': vehicule.idV}) }}">Modifier</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="12">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <a href="{{ path('app_vehicule_new') }}">Ajouter vehicule</a>
+{% endblock %}

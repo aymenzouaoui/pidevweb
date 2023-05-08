@@ -1,0 +1,41 @@
+{% extends 'baseadmin.html.twig' %}
+
+{% block title %}Gifts index{% endblock %}
+
+{% block body %}
+    <a href="{{ path('app_gifts_index') }}" style="color: #00b4d8; font-size: 2.0em; text-decoration: none;" >Cadeaux</a>
+
+    <table class="table">
+        <thead  style="font-weight: bold">
+            <tr>
+                <th>Nom</th>
+                <th>Description</th>
+                <th>Valeur</th>
+                <th>Image</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for gift in gifts %}
+            <tr>
+                <td>{{ gift.name }}</td>
+                <td>{{ gift.description }}</td>
+                <td>{{ gift.value }}</td>
+                <td><img style="width:75px;height:75px" src="{{  gift.photo }}"> </td>
+
+                <td>
+                    <a href="{{ path('app_gifts_show', {'id': gift.id}) }}" class="btn btn-outline-light" style="background-color:#00b4d8 " >Afficher</a>
+                    <a href="{{ path('app_gifts_edit', {'id': gift.id}) }}" class="btn btn-outline-light" style="background-color:#00b4d8 " >Modifier</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+
+    <a href="{{ path('app_gifts_new') }}" class="btn btn-outline-light" style="background-color:#00b4d8 " >+ Nouveau cadeau</a>
+{% endblock %}

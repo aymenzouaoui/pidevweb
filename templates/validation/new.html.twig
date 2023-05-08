@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+{% form_theme form 'bootstrap_5_layout.html.twig' %}
+{% block title %}New Validation
+{% endblock %}
+
+{% block body %}
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+	<h1>Create new Validation</h1>
+
+	{% if form_errors(form) %}
+		<div class="alert alert-danger">
+			{{ form_errors(form) }}
+		</div>
+	{% endif %}
+
+	{{ form_start(form,{'attr': {'novalidate': 'novalidate'}}) }}
+	<div class="offset-3 col-3" style="margin-top:40px">
+    {{ form_row(form._token) }}
+		<div class="form-group">
+			{{ form_label(form.imagea) }}
+			{{ form_widget(form.imagea) }}
+			{{form_errors(form.imagea)}}
+		</div>
+
+		<div class="form-group">
+			{{ form_label(form.imageb) }}
+			{{ form_widget(form.imageb) }}
+			{{form_errors(form.imageb)}}
+		</div>
+
+{# <div class="form-group">
+			{{ form_label(form.idu) }}
+			{{ form_widget(form.idu) }}
+			{{form_errors(form.idu)}}
+		</div> #}
+		<button type="valider" class="btn btn-outline-success">Create</button>
+
+
+		<a href="{{ path('app_validation_index') }}">back to list</a>
+	</div>
+{% endblock %}

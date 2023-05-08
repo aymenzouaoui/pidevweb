@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Colis{% endblock %}
+
+{% block body %}
+<!-- ======= Breadcrumbs ======= -->
+    <div class="breadcrumbs d-flex align-items-center" style="background-image: url('assets/img/contact-header.jpg');">
+      <div class="container position-relative d-flex flex-column align-items-center">
+
+        <h2>Colis</h2>
+        <ol>
+          <li><a href="index.html">Accueil</a></li>
+          <li>Colis</li>
+        </ol>
+
+      </div>
+    </div><!-- End Breadcrumbs -->
+<div class="container">
+    <h1>Ajouter un nouveau Colis</h1>
+
+    {{ include('colis/_form.html.twig') }}
+
+    <a href="{{ path('app_colis_index') }}">Retour à la liste</a>
+    
+{% endblock %}
+

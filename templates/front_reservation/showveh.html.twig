@@ -1,0 +1,172 @@
+{% extends 'base2.html.twig' %}
+
+{% block title %}Hello InterfaceReservationController!{% endblock %}
+{% block stylesheets %}
+{{ encore_entry_link_tags('app') }}
+			<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+   			 <link rel="stylesheet" href="{{ asset('bundles/mercuryseriesflashy/css/flashy.css') }}">
+{{parent()}}
+	<link href="{{asset('front/assets/css/mesRes.css')}}" rel="stylesheet">
+    <style>
+        #calendrier{
+            width: 50%;
+            margin: auto;
+        }
+    </style>
+{% endblock %}
+{% block body %}
+    <div class="breadcrumbs d-flex align-items-center" style="background-image: url('assets/img/contact-header.jpg');">
+      <div class="container position-relative d-flex flex-column align-items-center">
+
+        <h2>Location des vehicules</h2>
+        <ol>
+          <li><a href="index.html">Accueil</a></li>
+          <li>Location des vehicules</li>
+        </ol>
+
+      </div>
+    </div><!-- End Breadcrumbs -->
+      
+    <section id="portfolio-details" class="portfolio-details">
+  <div class="container" data-aos="fade-up">
+    <div class="row gy-4" style="height: 400px;">
+      <div class="col-lg-4" style="height: 100%;">
+        <div style="height: 100%;">
+          <div class="swiper-wrapper align-items-center" style="height: 100%;">
+            <div class="swiper-slide" style="height: 100%;">
+              <img style="width:100%;height:100%;" src="{{ vehicule.img }}">
+            </div>
+          </div>
+          <div class="swiper-pagination"></div>
+        </div>
+      </div>
+                
+      <div class="col-lg-4" style="height: 100%;">
+        <div class="portfolio-info" style="height: 100%;">
+          <div class="d-flex justify-content-between align-items-center">
+            <h3>Detaille vehicule</h3>
+          </div>
+          <hr>
+          <ul>
+            <li><strong>Marque</strong>: {{vehicule.marque}}</li>
+            <li><strong>Modele</strong>: {{vehicule.modele}}</li>
+            <li><strong>Cheveaux</strong>: {{vehicule.chevaux}}</li>
+            <li><strong>Prix</strong>: {{vehicule.prix}}dt /Jour</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="col-lg-4" style="height: 100%;">
+        <div class="portfolio-info" style="height: 100%;">
+          <div class="d-flex justify-content-between align-items-center">
+            <h3>Réserver</h3>
+            <h3 class="js-prix" style="font-weight: bold; color: green" data-prix="{{ vehicule.prix }}">{{vehicule.prix}}dt</h3>
+          </div>
+          <hr>
+
+    {{ form_start(form, {'attr': {'id': 'reservation-form','novalidate': 'novalidate'}}) }}
+{% form_theme form 'bootstrap_5_layout.html.twig' %}
+
+    <div class="mb-3">
+        {{ form_label(form.date_deb) }}
+        {{ form_widget(form.date_deb, {'attr': {'type': 'date'}}) }}
+        {{ form_errors(form.date_deb) }}
+    </div>
+
+    <div class="mb-3">
+        {{ form_label(form.date_fin) }}
+        {{ form_widget(form.date_fin, {'attr': {'type': 'date'}}) }}
+        {{ form_errors(form.date_fin) }}
+
+    </div>
+
+    {{ form_widget(form.Reserver, { 'label': 'Réserver', 'attr': {'class': 'btn btn-primary'} }) }}
+
+    {{ form_end(form) }}       </div>
+      </div>
+    </div>
+  </div>
+<br>
+<br>
+<div id="calendrier"></div> 
+
+</section><!-- End Portfolio Details Section -->
+<div style="text-align: center;">
+  <a class="btn btn-primary" href="{{ path('app_reservation_index') }}" style="margin-left: 50%;">Retourner</a>
+</div>
+ 
+<br>
+{% endblock %}
+
+{% block javascripts %}
+		{{parent()}}
+        	 <script src="//code.jquery.com/jquery.js"></script>
+   			 <script src="{{ asset('bundles/mercuryseriesflashy/js/flashy.js') }}"></script>
+			{{ encore_entry_script_tags('app') }}
+<script>
+    window.onload = () => {
+       const ReservationForm = document.querySelector("#reservation-form"); 
+    const dateDebInput = document.querySelector(".reservation-datedeb");
+    const dateFinInput = document.querySelector(".reservation-datefin");
+
+    const updatePrixElement = () => {
+        const dateDebValue = dateDebInput.value;
+        const dateFinValue = dateFinInput.value;
+
+        if (dateDebValue && dateFinValue) {
+            const dateDeb = new Date(dateDebValue);
+            const dateFin = new Date(dateFinValue);
+
+            const diffTime = Math.abs(dateFin - dateDeb);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+            var prixElement = document.querySelector('.js-prix');
+            const prix = prixElement.getAttribute('data-prix');
+            console.log("ff");
+            if(dateDebValue == dateFinValue)
+                 prixElement.textContent = parseFloat(prix) + "dt";
+            else
+                prixElement.textContent = parseFloat(prix) * (diffDays+1) + "dt";
+        }
+    }
+
+    dateFinInput.addEventListener("change", updatePrixElement);
+
+    dateDebInput.addEventListener("change", updatePrixElement);
+       
+       
+       
+        let calendarElt = document.querySelector("#calendrier")
+        let calendar = new FullCalendar.Calendar(calendarElt, {
+            initialView: 'dayGridMonth',
+            locale: 'fr',
+            timeZone: 'Europe/Paris',
+            headerToolbar: {
+            },
+            events: {{ data|raw }},
+            editable: true,
+            eventResizableFromStart: true
+        })
+        calendar.on('eventChange', (e) => {
+            let url = `/api/${e.event.id}/edit`
+            let donnees = {
+                "title": e.event.title,
+                "description": e.event.extendedProps.description,
+                "start": e.event.start,
+                "end": e.event.end,
+                "backgroundColor": e.event.backgroundColor,
+                "borderColor": e.event.borderColor,
+                "textColor": e.event.textColor,
+                "allDay": e.event.allDay
+            }
+            
+            let xhr = new XMLHttpRequest
+            xhr.open("PUT", url)
+            xhr.send(JSON.stringify(donnees))
+        })
+        calendar.render()
+    }
+</script>
+{{parent()}}
+{{ include('@MercurySeriesFlashy/flashy.html.twig') }}
+{% endblock %}

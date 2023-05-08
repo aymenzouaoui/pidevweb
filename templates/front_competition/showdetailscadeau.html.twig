@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<!-- ======= Breadcrumbs ======= -->
+    <div class="breadcrumbs d-flex align-items-center" style="background-image: url('assets/img/contact-header.jpg');">
+      <div class="container position-relative d-flex flex-column align-items-center">
+          <li><a href="{{path('app_accueil')}}">Accueil</a></li>
+        <h2>Gamification</h2>
+      </div>
+    </div><!-- End Breadcrumbs -->
+
+    <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
+
+      
+    </div>
+  </header><!-- End Header -->
+
+  <main id="main">
+
+  
+
+    <!-- ======= Portfolio Details Section ======= -->
+    <section id="portfolio-details" class="portfolio-details">
+      <div class="container" data-aos="fade-up">
+    <div class="row gy-4" style="height: 400px;">
+      <div class="col-lg-8" style="height: 100%;">
+        <div style="height: 100%;">
+          <div class="swiper-wrapper align-items-center" style="height: 100%;">
+            <div class="swiper-slide" style="height: 100%;">
+              <img style="width:100%;height:100%;" src="{{ gifts.photo }}">
+            </div>
+          </div>
+          <div class="swiper-pagination"></div>
+        </div>
+      </div>
+          <div class="col-lg-4">
+            <div class="portfolio-info">
+              <h3>{{gifts.name}}</h3>
+              <ul>
+                <li><strong>Description</strong>: {{gifts.description}}</li>
+                <li><strong>Valeur</strong>: {{gifts.value}}</li>
+               <a href="{{ path('exchange_gift',{'id' : gifts.id})}}" class="btn btn-sm btn-outline-secondary" id="exchange-btn" >Echanger</a>
+             
+              </ul>
+            </div>
+            <div class="portfolio-description">
+         <img src="{{ qr }}" alt="QR code" style="height:50%;width:50%"  class="center" />
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+      <br><br>
+<br><br>
+<br><br>
+    </section><!-- End Portfolio Details Section -->
+
+  </main><!-- End #main -->
+  <script>
+    function deductDiamonds(value) {
+      // code to deduct diamonds from user's account
+      // value parameter will contain the gift value
+      // make an AJAX request to the server to deduct the appropriate amount of diamonds
+      alert(value);
+    }
+  </script>
+</body>
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends 'baseadmin.html.twig' %}
+
+{% block title %}Competition index
+{% endblock %}
+
+{% block body %}
+	<a href="{{ path('app_competition_index') }}" style="color: #00b4d8; font-size: 2.0em; text-decoration: none;">Compétition</a>
+
+	<div class="table-responsive mt-4">
+		<table class="table table-striped">
+			<thead class="thead-light">
+				<tr>
+					<th>Titre</th>
+					<th>Date de début</th>
+					<th>Date de fin</th>
+					<th>Type</th>
+					<th>Nombre de participants</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for competition in competitions %}
+					<tr>
+						<td>{{ competition.title }}</td>
+						<td>{{ competition.dateDeb ? competition.dateDeb|date('Y-m-d H:i:s') : '' }}</td>
+						<td>{{ competition.dateFin ? competition.dateFin|date('Y-m-d H:i:s') : '' }}</td>
+						<td>{{ competition.type }}</td>
+						<td>{{ competition.nbp }}</td>
+						<td>
+							<a href="{{ path('app_competition_show', {'id': competition.id}) }}" class="btn btn-sm btn-info">Afficher</a>
+							<a href="{{ path('app_competition_edit', {'id': competition.id}) }}" class="btn btn-sm btn-warning">Modifier</a>
+
+
+							<form method="post" action="{{ path('app_competition_delete', {'id': competition.id}) }}" onsubmit="return confirm('Êtes-vous supprimer cette compétition?');">
+								<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ competition.id) }}">
+								<button class="btn btn-sm btn-danger">Supprimer</button>
+							</form>
+						</td>
+					</tr>
+				</td>
+			</tbody>
+		</tr>
+	{% else %}
+		<tr>
+			<td colspan="7">Aucune compétition trouvée</td>
+		</tr>
+	{% endfor %}
+</tbody></table></div><div class="mt-4"><a href="{{ path('app_competition_new') }}" class="btn btn-success">
+<i class="fas fa-plus"></i>
++ Nouvelle compétition</a></div><hr><div class="mt-4"><a href="{{ path('app_gifts_index') }}" style="color: #00b4d8; font-size: 2.0em; text-decoration: none;">
+<i class="fas fa-gift" style="font-size: 1.5em; margin-right: 10px;"></i>
+Cadeaux</a></div>{% endblock %}
+

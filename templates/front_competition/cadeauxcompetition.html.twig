@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gifts {% endblock %}
+
+
+{% block body %}
+<!-- ======= Breadcrumbs ======= -->
+    <div class="breadcrumbs d-flex align-items-center" style="background-image: url('assets/img/contact-header.jpg');">
+      <div class="container position-relative d-flex flex-column align-items-center">
+          <li><a href="{{path('app_accueil')}}">Accueil</a></li>
+        <h2>Gamification</h2>
+      </div>
+    </div><!-- End Breadcrumbs -->
+ <div class="container">
+        <div class="py-2 text-center">
+            <h2>Bienvenue sur la liste des cadeaux: ({{gifts.getTotalItemCount}})</h2>
+            <p>Votre score actuel est : {{user.score}}</p>
+            <button type="button" class="btn btn-sm btn-primary" onclick="onConvertButtonClick({{ user.score }})">Convertir</button>
+            <span id="diamonds"></span>
+        </div>
+    <a href="{{ path('app_gifts_index') }}" style="color: #00b4d8; font-size: 2.0em; text-decoration: none;" >Gifts</a>
+
+    <div class="row">
+        {% for gift in gifts %}
+            <div class="col-md-3">
+                <div class="card mb-4 shadow-sm">
+                    <img src="{{ gift.photo }}" class="card-img-top" alt="{{ gift.name }}" style="height: 200px; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ gift.name }}</h5>
+                        <p class="card-text">{{ gift.description }}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <p class="card-text"><strong>{{ gift.value }}</strong></p>
+                          {% if user.score >= gift.value %}
+                                    <div class="btn-group">
+                                        <a href="{{path('app_front_showdetailscadeau',{'id': gift.id})}}" class="btn btn-sm btn-outline-secondary" id="exchange-btn">Voir détails</a>
+                                    </div>
+                                {% else %}
+                                    <p style="color: red; font-size: 0.8em;">Votre score est insuffisant</p>
+                                {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="col-md-12">
+                <p class="text-center">no records found</p>
+            </div>
+        {% endfor %}
+    </div>
+
+  <script>
+        function onConvertButtonClick(score) {
+            // Convert score to diamonds
+            var diamonds = Math.floor(score / 10);
+
+            // Update diamonds display
+            document.getElementById("diamonds").textContent = diamonds + " diamants";
+        }
+    </script>
+    {{knp_pagination_render(gifts)}}
+{% endblock %}

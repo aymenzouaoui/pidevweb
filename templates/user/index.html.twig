@@ -1,0 +1,220 @@
+{% extends 'base.html.twig' %}
+{% block title %}User index
+{% endblock %}
+
+{% block body %}
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	{#<!-- ======= Breadcrumbs ======= -->
+																							<div class="breadcrumbs d-flex align-items-center" style="background-image: url('assets/img/contact-header.jpg');">
+																								<div class="container position-relative d-flex flex-column align-items-center">
+																							
+																									<h2>Contact</h2>
+																									<ol>
+																										<li><a href="index.html">Home</a></li>
+																										<li>Contact</li>
+																									</ol>
+																							
+																								</div>
+																							</div><!-- End Breadcrumbs -->#}
+
+
+	<div class="container-fluid p-0">
+{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+		<input type="text" id="search" class="form-control" placeholder="Search"><br>
+		{% endif %}
+	{# 	<a class="btn btn-secondary" href="{{ path('app_user_new') }}">Register</a> #}
+		<h1 class="h3 mb-3">Transporteur</h1>
+		<div class="row" id="alldiv">
+
+			{% for u in pagination %}
+
+				<div class="card col-5 offset-3 m-1 p-5">
+
+					<div class="card-body row">
+						<div class="col-6">
+							<img src="{{u.image}}" alt="Admin" class="rounded-circle p-1 bg-primary" width="200" height="200">
+							<div class="portfolio-info">
+								
+								<a href="{{u.image}}" title="{{u.nom}}" data-gallery="portfolio-gallery-product" class="glightbox preview-link">
+									<i class="bi bi-zoom-in"></i>
+								</a>
+								<a href="portfolio-details.html" title="More Details" class="details-link">
+									<i class="bi bi-link-45deg"></i>
+								</a>
+							</div>
+						</div>
+						<div class="col-6 card-title align-self-center mb-0">
+							<h5>{{ u.nom}}</h5>
+							<p class="m-0">
+							
+											<p class="m-0">{{ u.roles[0] }}</p>
+										
+							</p>
+						</div>
+					</div>
+					<ul class="list-group list-group-flush">
+						<li class="list-group-item">
+							<i class="fa fa-envelope float-right"></i>Email :
+							<a href="#">{{ u.email }}</a>
+						</li>
+						<li class="list-group-item">
+							<i class="fa fa-phone float-right"></i>Phone :
+							{{ u.numtel }}
+						</li>
+					</ul>
+
+					<div class="float-right btn-group btn-group-sm">
+						<a href="{{ path('app_user_showp', {'id': u.id}) }}" class="btn btn-outline-primary">Profil
+							<i class="fa fa-user-circle"></i>
+
+						</i>
+					</a>
+
+					{# 
+											<a href="{{ path('app_user_edit', {'id': u.id}) }}" class="btn btn-outline-primary">Edit
+												<i class="fa fa-pencil">
+													
+												</i>
+											</a>
+											<a href="{{ path('app_user_delete', {'id': u.id}) }}" class="btn btn-outline-primary">Delete
+												<i class="fa fa-pencil">
+													
+												</i>
+											</a> #}
+
+					<a href="{{ path('app_message_new', {'id': u.id} )}}" class="btn btn-outline-primary">Message
+						<i class="fa fa-m"></i>
+					</a>
+
+
+				</div>
+			</div>
+
+
+		{% endfor %}
+
+
+		<div class="navigation">
+			{{ knp_pagination_render(pagination) }}
+		</div>
+
+
+	</div>
+</div>
+
+<div class="row" id="searchdiv"></div>
+<div style="display:none">
+	<table border="1" id="t" class="table table-hover table-dark">
+		<thead class="thead-dark">
+			<tr>
+				<td>Id</td>
+				<td>Email</td>
+				<td>Roles</td>
+				<td>Password</td>
+				<td>Nom</td>
+				<td>Prenom</td>
+				<td>Adress</td>
+				<td>Cin</td>
+				<td>Date_naissance</td>
+				<td>Date_creation_c</td>
+				<td>Status</td>
+				<td>Token</td>
+				<td>Score</td>
+				<td>Numtel</td>
+				<td>Image</td>
+				<td>Compte_ex</td>
+				<td>Token_ex</td>
+				<td>actions</td>
+			</tr>
+		</thead>
+		<tbody id="all">
+			{% for u in pagination %}
+				<tr>
+					<td>
+						{{ u.id }}
+					</td>
+					<td>
+						{{ u.email }}
+					</td>
+					<td>
+						{{ u.password }}
+					</td>
+
+					<td>
+						<a href="{{ path('app_user_edit', {'id':u.id}) }}">
+							modifier</a>
+						<a href="{{ path('app_user_delete', {'id':u.id}) }}">
+							supprimer</a>
+					</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+		<tbody id="searchtab">
+			<td>ss</td>
+		</tbody>
+	</table>
+</div>{% endblock %}{% block javascripts %}
+{{ parent() }}
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+{# <script src="{{asset('front/assets/js/search.js')}}"></script>
+ #}<script>
+	$(document).ready(function () {
+$("#search").keyup(function () {
+var value = $(this).val();
+console.log("value : " + value)
+
+$.ajax({
+url: "{{ path('app_admin_search') }}",
+
+type: 'GET',
+
+data: {
+'searchValue': value
+},
+
+success: function (retour) {
+if (retour) {
+$('#t tbody#searchtab').empty();
+$('#searchdiv').empty();
+$.each(JSON.parse(retour), function (i, obj) {
+$('#t tbody#all').hide();
+// $('#alldiv').hide();
+
+$('#t tbody#searchtab').append('<tr><td>' + obj.id + '</td><td> ' + obj.email + ' </td><td>' + obj.roles + '</td><td>' + obj.password + '</td><td>' + obj.nom + '</td><td>' + obj.prenom + '</td><td>' + obj.adress + '</td><td>' + obj.cin + '</td><td>' + obj.dateNaissance + '</td><td>' + obj.dateCreationC + '</td><td>' + obj.status + '</td><td>' + obj.token + '</td><td>' + obj.score + '</td><td>' + obj.numtel + '</td><td>' + obj.image + '</td><td>' + obj.compteEx + '</td><td>' + obj.tokenEx + '</td><td><a href="' + obj.id + 'edit/">modifier</a> </br><a	href="' + obj.id + 'delete/">supprimer</a></td></tr>');
+$('#searchdiv').append('<div class="card col-5 offset-3 m-1 p-5" ><div class="card-body row"><div class="col-6"><img src="' + obj.image + '" alt="Admin" class="rounded-circle p-1 bg-primary" width="180" height="180"></div><div class="col-6 card-title align-self-center mb-0"><h5>' + obj.nom + '</h5></div></div><ul class="list-group list-group-flush"><li class="list-group-item"><i class="fa fa-envelope float-right"></i>Email :<a href="#">' + obj.email + '</a></li><li class="list-group-item"><i class="fa fa-phone float-right"></i>Phone : ' + obj.numtel + '</li></ul><div class="float-right btn-group btn-group-sm"><a href=" {{ path('app_user_show', {'id': '+obj.id+'}) }}" class="btn btn-outline-primary">Profil<i class="fa fa-pencil"></i></a><a href=" {{ path('app_message_new', {'id': '+obj.id+'} ) }}" class="btn btn-outline-primary">Message<i class="fa fa-pencil"></i></a></div></div>');
+});
+} else {
+$('#t tbody#all').show();
+$('#alldiv').show();
+console.log("test")
+$('#t tbody#searchtab').empty();
+$('#searchdiv').empty();
+$('#t tbody#searchtab').fadeIn('fast');
+$('#searchdiv').fadeIn('fast');
+}
+}
+});
+return false;
+});
+});
+</script>
+
+<script>
+	$("#search").keyup(function () {
+if ($(this).val() === "") {
+console.log("test")
+$('#alldiv').show();
+$('#searchdiv').hide();
+} else {
+$('#alldiv').hide();
+$('#searchdiv').show();
+}
+})
+</script>{% endblock %}

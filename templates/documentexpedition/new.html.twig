@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau Documentexpedition{% endblock %}
+
+{% block body %}
+<!-- ======= Breadcrumbs ======= -->
+    <div class="breadcrumbs d-flex align-items-center" style="background-image: url('assets/img/contact-header.jpg');">
+      <div class="container position-relative d-flex flex-column align-items-center">
+
+        <h2>Colis</h2>
+        <ol>
+          <li><a href="index.html">Accueil</a></li>
+          <li>Colis</li>
+        </ol>
+
+      </div>
+    </div><!-- End Breadcrumbs -->
+    <h1>Ajouter un Documentexpedition</h1>
+
+    {{ include('documentexpedition/_form.html.twig') }}
+
+    <a href="{{ path('app_documentexpedition_index') }}">Retour à la liste</a>
+{% endblock %}

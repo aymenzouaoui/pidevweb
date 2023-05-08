@@ -1,0 +1,83 @@
+{% extends 'baseadmin.html.twig' %}
+
+{% block title %}Reservations{% endblock %}
+
+		{% block stylesheets %}
+
+			{{ encore_entry_link_tags('app') }}
+			<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+   			 <link rel="stylesheet" href="{{ asset('bundles/mercuryseriesflashy/css/flashy.css') }}">
+{{parent()}}
+	<link href="{{asset('front/assets/css/mesRes.css')}}" rel="stylesheet">
+		{% endblock %}
+
+{% block body %}
+<h1>Liste des locations</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Etat</th>
+                <th>Client</th>
+                <th>Vehicule</th>
+                <th>Informations</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+         {% for reservationAndVehicule in reservationsAndVehicules |reverse%}
+            <tr>
+                <td> {{reservationAndVehicule.reservation.etat}}</td>
+                <td>
+                                <a href="{{ path('app_user_showp', {'id': reservationAndVehicule.user.id}) }}">
+                <img style="width:75px;height:75px" src="{{reservationAndVehicule.user.image }}" alt="" />
+                </a>
+                 </td>
+                <td>
+                <a href="{{ path('app_vehicule_show', {'idV': reservationAndVehicule.vehicule.idV}) }}">
+                <img  style="width:75px;height:75px"src="{{reservationAndVehicule.vehicule.img }}" alt="" />
+                </a>   
+                </td>
+               <td>
+                                            <div class="event-wrap">
+                                                <h4>{{reservationAndVehicule.vehicule.marque}}  {{reservationAndVehicule.vehicule.modele}}</h4>
+                                                 <h4>{{reservationAndVehicule.vehicule.lpec}}</h4>
+                                                  <h4>{{reservationAndVehicule.reservation.somme}}dt</h4>                                                 
+                                                    </div>
+                                                    <div class="time">
+                                                        <span>{{reservationAndVehicule.reservation.dateDeb ? reservationAndVehicule.reservation.dateDeb|date('Y-m-d') : ''}} - {{reservationAndVehicule.reservation.dateFin ? reservationAndVehicule.reservation.dateFin|date('Y-m-d') : ''}} </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                        <td>
+                                            <div class="primary-btn">
+                                                <a class="btn btn-primary" href="{{ path('app_reservation_confirme', {'id': reservationAndVehicule.reservation.id}) }}">Confirmer</a>
+                                                <a class="btn btn-primary" href="{{ path('app_reservation_terminer', {'id': reservationAndVehicule.reservation.id}) }}">Terminer</a>
+                                                <a class="btn btn-primary" href="{{ path('app_reservation_download', {'id': reservationAndVehicule.reservation.id}) }}">Facture</a>
+                                            
+                                            </div>
+          </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="12">no records found</td>
+            </tr>
+        {% endfor %}
+          {{ knp_pagination_render(reservationsAndVehicules) }} 
+
+        </tbody>
+    </table>
+
+
+{% block javascripts %}
+		{{parent()}}
+        	 <script src="//code.jquery.com/jquery.js"></script>
+   			 <script src="{{ asset('bundles/mercuryseriesflashy/js/flashy.js') }}"></script>
+			{{ encore_entry_script_tags('app') }}
+{% endblock %}
+{{ include('@MercurySeriesFlashy/flashy.html.twig') }}
+{% endblock %}
+
+
+

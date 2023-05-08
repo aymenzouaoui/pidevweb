@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+{{ parent() }}
+<link href="{{ asset('front/assets/css/cc.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+
+<div class="breadcrumbs d-flex align-items-center" style="background-image: url('assets/img/contact-header.jpg');">
+      <div class="container position-relative d-flex flex-column align-items-center">
+
+        <h2>Liste des annonces</h2>
+        <ol>
+          <li><a href="index.html">Accueil</a></li>
+          <li>Liste des annonces</li>
+        </ol>
+
+      </div>
+    </div><!-- End Breadcrumbs -->
+ <div class="container">
+ <div class="row justify-content-center">
+   <div class="col-md-10">
+      <table class="table">
+        <tbody>
+          {% for annonce in annonces|batch(1) %}
+          <tr>
+           {% for a in annonce %}
+           <td>
+            <div class="card" style="width: 100%;">
+               <div class="card-body">
+                <h5 class="card-title">{{ a.Type }}</h5>
+                <ul class="list-unstyled">
+               <li><strong>Ville de départ :</strong> {{ a.villeDep }}</li>
+               <li><strong>Ville d'arrivée :</strong> {{ a.villeArr }}</li>
+               <li><strong>Date de départ :</strong> {{ a.DateDep }}</li>
+                <li><strong>Date d'arrivée :</strong> {{ a.DateArr }}</li>
+               <li><strong>Description :</strong> {{ a.description }}</li>
+               </ul>
+             <div class="float-right btn-group btn-group-sm">
+              <a href="{{ path('app_annonces_edit', {'id': a.id}) }}" class="btn btn-primary tooltips" data-placement="top" data-toggle="tooltip" data-original-title="Modifier"><i class="fa fa-pencil"></i></a>
+              <a href="{{ path('app_annonces_delete', {'id': a.id}) }}" class="btn btn-secondary tooltips" data-placement="top" data-toggle="tooltip" data-original-title="Supprimer"><i class="fa fa-times"></i></a>
+              <a href="{{ path('app_colis_rec', {'id': a.id}) }}" class="btn btn-secondary tooltips" data-placement="top" data-toggle="tooltip" data-original-title="Accepter"><i class="fa fa-times"></i></a>
+
+            </div>
+          </div>
+        </div>
+      </td>
+    {% endfor %}
+  </tr>
+{% endfor %}
+
+       </tbody>
+      </table>
+      
+      <div class="pagination">
+    {{ knp_pagination_render(annonces) }}
+</div>
+
+     </div>
+     </div>
+     </div>
+{% endblock %}

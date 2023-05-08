@@ -1,0 +1,11 @@
+{% extends 'baseadmin.html.twig' %}
+
+{% block title %}Ajouter Vehicule{% endblock %}
+
+{% block body %}
+    <h1>Ajouter vehicule</h1>
+
+    {{ include('vehicule/_form.html.twig') }}
+
+    <a href="{{ path('app_vehicule_index') }}">Retourner</a>
+{% endblock %}

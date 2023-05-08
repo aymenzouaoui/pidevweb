@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}La liste des compétitions{% endblock %}
+
+{% block body %}
+
+<section class="competitions">
+<!-- ======= Breadcrumbs ======= -->
+    <div class="breadcrumbs d-flex align-items-center" style="background-image: url('assets/img/contact-header.jpg');">
+      <div class="container position-relative d-flex flex-column align-items-center">
+          <li><a href="{{path('app_accueil')}}">Accueil</a></li>
+        <h2>Gamification</h2>
+      </div>
+    </div><!-- End Breadcrumbs -->
+  <div class="container">
+
+    <div class="row">
+      <div class="col-lg-12">
+        <h2 class="text-center mb-5">Compétitions en cours</h2>
+      </div>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+      {% for competition in competitions %}
+        <div class="col">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">{{ competition.title }}</h5>
+              <p class="card-text">{{ competition.type }}</p>
+              <ul class="list-unstyled">
+                <li><strong>Début : </strong>{{ competition.dateDeb ? competition.dateDeb|date('Y-m-d H:i:s') : '' }}</li>
+                <li><strong>Fin : </strong>{{ competition.dateFin ? competition.dateFin|date('Y-m-d H:i:s') : '' }}</li>
+                <li><strong>Nombre de participants : </strong>{{ competition.nbp }}</li>
+              </ul>
+            </div>
+            <div class="card-footer">
+              <div class="d-grid gap-2">
+                <a href="{{path('app_front_participer',{'id': competition.id})}}" class="btn btn-sm btn-outline-secondary" id="participer-btn" >Participer</a>
+                <a class="btn btn-secondary" href="#">Cadeaux</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% else %}
+        <div class="col-lg-12">
+          <p>Il n'y a aucune compétition disponible.</p>
+        </div>
+      {% endfor %}
+
+    </div>
+
+  </div>
+</section>
+
+{% endblock %}

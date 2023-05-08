@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Quiz sur la Tunisie{% endblock %}
+
+{% block body %}
+  <div class="container">
+    <h1>Quiz sur la Tunisie</h1>
+
+    {% if quizForm is defined %}
+      <form method="post">
+        {{ form_start(quizForm) }}
+        {% for questionForm in quizForm.questions %}
+          <h3>{{ questionForm.vars.value.question }}</h3>
+          {{ form_widget(questionForm.answer) }}
+        {% endfor %}
+        {{ form_end(quizForm) }}
+        <button type="submit" class="btn btn-primary mt-3">Soumettre</button>
+      </form>
+
+      {% if quizResults is defined %}
+        <div class="mt-3">
+          <h2>Résultat</h2>
+          <p>Vous avez répondu correctement à {{ quizResults.correctAnswers }} question(s) sur {{ quizResults.totalQuestions }}.</p>
+        </div>
+      {% endif %}
+    {% else %}
+      <p>Aucune question n'a été trouvée.</p>
+    {% endif %}
+  </div>
+{% endblock %}

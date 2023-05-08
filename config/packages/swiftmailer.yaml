@@ -1,0 +1,12 @@
+swiftmailer:
+    transport: smtp
+    host: smtp.example.com
+    username: aymen.zouaoui@esprit.tn
+    password: 223AMT0874
+    port: 587
+    encryption: tls
+    auth_mode: login
+    timeout: 30
+    spool:
+        type: file
+        path: '%kernel.cache_dir%/swiftmailer/spool'

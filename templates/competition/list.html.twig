@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Liste triée des compétitions</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Date de début</th>
+                <th>Date de fin</th>
+                <th>Nombre de participants</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for competition in competitions %}
+                <tr>
+                    <td>{{ competition.nom }}</td>
+                    <td>{{ competition.dateDeb|date('Y-m-d') }}</td>
+                    <td>{{ competition.dateFin|date('Y-m-d') }}</td>
+                    <td>{{ competition.participants|length }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

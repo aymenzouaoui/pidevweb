@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+{% form_theme form 'bootstrap_5_layout.html.twig' %}
+{% block stylesheets %}
+	{{parent()}}
+	<link href="{{asset('front/assets/css/cc.css')}}" rel="stylesheet">
+
+{% endblock %}
+{% block body %}
+
+	<div style="margin-top:8%">
+
+
+			{{ form_start(form,{'attr': {'novalidate': 'novalidate'}}
+			) }}
+
+	    <div class="form-body">
+        <div class="row">
+            <div class="form-holder">
+                <div class="form-content">
+                    <div class="form-items">
+                        <h3>Nouvelle Reclamation</h3>
+                        <p>Veuillez remplir ce formulaire.</p>
+                        <form class="requires-validation" novalidate>
+						{{ form_row(form._token) }}
+
+							 <div class="col-md-12 mt-3">
+                            {{ form_row(form.objet) }}
+                            </div>
+
+							 <div class="col-md-12 mt-3">
+                            {{ form_row(form.description) }}
+                            </div>
+                            
+
+                      
+						{{ form_end(form) }}
+                  
+
+                           
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

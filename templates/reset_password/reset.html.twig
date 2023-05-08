@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Reset your password
+{% endblock %}
+
+{% block head %}
+	{% block stylesheets %}
+		{{parent()}}
+		<link href="{{asset('front/assets/css/login.css')}}" rel="stylesheet">
+
+	{% endblock %}
+{% endblock %}
+
+{% block body %}
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<div class="row justify-content-center mt-5">
+		<div class="col-md-6">
+			<div class="container mt-5" align="center">
+
+				<h1 class="display-4">Reset your password</h1>
+				<br>
+				<br><br>
+
+				<div class="mb-3" align="center">
+					{{ form_start(resetForm) }}
+                    <br>
+<br>
+					{{ form_row(resetForm.plainPassword, {'attr': {'class': 'form-control'}}) }}
+					<br>
+					<br>
+					<button class="btn btn-primary mt-3">Reset password</button>
+					{{ form_end(resetForm) }}
+				</div>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}

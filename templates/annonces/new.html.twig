@@ -1,0 +1,78 @@
+{% extends 'base.html.twig' %}
+{% form_theme form 'bootstrap_5_layout.html.twig' %}
+{% block stylesheets %}
+	{{parent()}}
+	<link href="{{asset('front/assets/css/cc.css')}}" rel="stylesheet">
+
+{% endblock %}
+{% block body %}
+<div class="breadcrumbs d-flex align-items-center" style="background-image: url('assets/img/contact-header.jpg');">
+      <div class="container position-relative d-flex flex-column align-items-center">
+
+        <h2>Ajouter annonce</h2>
+        <ol>
+          <li><a href="index.html">Accueil</a></li>
+          <li>Ajouter annonce</li>
+        </ol>
+
+      </div>
+    </div><!-- End Breadcrumbs -->
+	<div style="margin-top:8%">
+
+{% if form_errors(form) %}
+				<div class="alert alert-danger">
+					{{ form_errors(form) }}
+				</div>
+			{% endif %}
+			{{ form_start(form,{'attr': {'novalidate': 'novalidate'}}
+			) }}
+
+	    <div class="form-body">
+        <div class="row">
+            <div class="form-holder">
+                <div class="form-content">
+                    <div class="form-items">
+                        <h3>Nouvelle Annonce</h3>
+                        <p>Veuillez remplir ce formulaire.</p>
+                        <form class="requires-validation" novalidate>
+						{{ form_row(form._token) }}
+
+                            
+                            <div class="col-md-12">
+                               {{ form_row(form.ville_dep) }}
+                            </div>
+
+                           <div class="col-md-12">
+                               {{ form_row(form.ville_arr) }}
+                           </div>
+
+
+                           <div class="col-md-12">
+                              {{ form_row(form.date_dep) }}
+                           </div>
+
+
+                           <div class="col-md-12 mt-3">
+                            {{ form_row(form.date_arr) }}
+                            </div>
+
+							 <div class="col-md-12 mt-3">
+                            {{ form_row(form.prix) }}
+                            </div>
+
+							 <div class="col-md-12 mt-3">
+                            {{ form_row(form.description) }}
+                            </div>
+
+                      
+						{{ form_end(form) }}
+                  
+
+                           
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

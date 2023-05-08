@@ -1,0 +1,88 @@
+{% extends 'baseClient.html.twig' %}
+
+{% block title %}Mes Reservations{% endblock %}
+
+		{% block stylesheets %}
+
+			{{ encore_entry_link_tags('app') }}
+			<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+   			 <link rel="stylesheet" href="{{ asset('bundles/mercuryseriesflashy/css/flashy.css') }}">
+{{parent()}}
+	<link href="{{asset('front/assets/css/mesRes.css')}}" rel="stylesheet">
+		{% endblock %}
+
+{% block body %}
+
+<div class="event-schedule-area-two bg-color pad100">
+    <div class="container">
+       
+        <!-- row end-->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade active show" id="home" role="tabpanel">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                         <th class="text-center" scope="col">Etat</th>
+                                        <th scope="col">Vehicule</th>
+                                        <th scope="col">Informations</th>
+                                        <th class="text-center" scope="col">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {% for reservationAndVehicule in reservationsAndVehicules |reverse%}
+                                    <tr class="inner-box">
+                                         <th scope="row">
+                                            <div class="event-date">
+                                                {{reservationAndVehicule.reservation.etat}}
+                                            </div>
+                                        </th>
+                                             <td>
+                                            <div class="event-img">
+                                                <img src="{{reservationAndVehicule.vehicule.img }}" alt="" />
+                                                
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="event-wrap">
+                                                <h4>{{reservationAndVehicule.vehicule.marque}}  {{reservationAndVehicule.vehicule.modele}}</h4>
+                                                 <h4>{{reservationAndVehicule.vehicule.lpec}}</h4>
+                                                  <h4>{{reservationAndVehicule.reservation.somme}}dt</h4>                                                 
+                                                    </div>
+                                                    <div class="time">
+                                                        <span>{{reservationAndVehicule.reservation.dateDeb ? reservationAndVehicule.reservation.dateDeb|date('Y-m-d') : ''}} - {{reservationAndVehicule.reservation.dateFin ? reservationAndVehicule.reservation.dateFin|date('Y-m-d') : ''}} </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="primary-btn">
+                                                <a class="btn btn-primary" href="{{ path('app_reservation_annuler', {'id': reservationAndVehicule.reservation.id}) }}">Annuler</a>
+                                                <a class="btn btn-primary" href="{{ path('app_reservation_download', {'id': reservationAndVehicule.reservation.id}) }}">Facture</a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                         {% endfor %}   
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>    
+            </div>
+            <!-- /col end-->
+        </div>
+        <!-- /row end-->
+    </div>
+</div>
+{% block javascripts %}
+			 <script src="//code.jquery.com/jquery.js"></script>
+   			 <script src="{{ asset('bundles/mercuryseriesflashy/js/flashy.js') }}"></script>
+			{{ encore_entry_script_tags('app') }}
+{% endblock %}
+{{ include('@MercurySeriesFlashy/flashy.html.twig') }}
+{% endblock %}
+
+
+
