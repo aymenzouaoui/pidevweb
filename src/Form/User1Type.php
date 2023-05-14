@@ -10,6 +10,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Validator\Constraints\File;
@@ -32,7 +34,7 @@ class User1Type extends AbstractType
                 'multiple' => true, // set this to false to allow only one option to be selected
                 'expanded' => true, // set this to true to display checkboxes
             ])
-            ->add('password')
+            ->add('password',PasswordType::class)
             ->add('nom')
             ->add('prenom')
             ->add('adress')
@@ -42,7 +44,7 @@ class User1Type extends AbstractType
             ->add('status')
             ->add('token')
             ->add('score')
-            ->add('numtel')
+            ->add('numtel',\Symfony\Component\Form\Extension\Core\Type\TelType::class)
             ->add('image', FileType::class, [
                 'label' => 'image',
 

@@ -127,14 +127,14 @@ class AdminController extends AbstractController
     #[Route('/{id}', name: 'app_admin_show', methods: ['GET'])]
 
     public function show(User $user): Response
-    {
+    {  
         return $this->render('admin/show.html.twig', [
             'user' => $user,
         ]);
     }
 
     #[Route('/edit/{id}', name: 'app_admin_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, User $user, UserRepository $userRepository, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, User $user, UserRepository $userRepository, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
 
     {
         $form = $this->createForm(User1Type::class, $user);
@@ -146,7 +146,12 @@ class AdminController extends AbstractController
             $user->setRoles($roles);
             $userRepository->save($user, true);
             $image = $form->get('image')->getData();
-
+            $user->setPassword(
+                $userPasswordHasher->hashPassword(
+                    $user,
+                    $form->get('password')->getData()
+                )
+            );
 
             if ($image) {
                 $fichier = md5(uniqid()) . '.' . $image->guessExtension();
@@ -171,7 +176,7 @@ class AdminController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_admin_delete', methods: ['POST'])]
+    #[Route('/delete/{id}', name: 'app_admin_delete', methods: ['POST'])]
     public function delete(Request $request, User $user, UserRepository $userRepository): Response
     {
         if ($this->isCsrfTokenValid('delete' . $user->getId(), $request->request->get('_token'))) {

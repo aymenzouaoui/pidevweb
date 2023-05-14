@@ -89,7 +89,14 @@ public function findBySearchQuery($query)
 
         return $qb->getQuery()->getResult();
     } 
-
+    public function findUserByEmail(string $email): ?User
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.email = :email')
+            ->setParameter('email', $email)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 
 public function findBySearchQuerya($nsc){
     return $this->createQueryBuilder('user')

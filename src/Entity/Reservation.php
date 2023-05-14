@@ -10,6 +10,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use DateTime;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Table(name : '`reservation`')]
 #[ORM\Entity(repositoryClass: ReservationRepository::class)]
@@ -17,31 +18,53 @@ class Reservation
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[Groups("reservations")]
     #[ORM\Column(name : 'idRes')]
     private ?int $id = null;
 
 
     #[Assert\NotBlank(message:"La date debut ne doit pas etre vide")]
+    #[Groups("reservations")]
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $date_deb = null;
 
     #[Assert\NotBlank(message:"La date fin ne doit pas etre vide")]
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Groups("reservations")]
     private ?\DateTimeInterface $date_fin = null;
 
     #[ORM\Column]
+    #[Groups("reservations")]
     //#[Assert\NotBlank(message:"Le somme ne doit pas être vide")]
     private ?float $somme = null;
 
     #[ORM\Column(length: 30)]
+    #[Groups("reservations")]
     private ?string $etat = "En attente";
 
     #[ORM\ManyToOne(inversedBy: 'reservations')]
     #[ORM\JoinColumn(nullable: false,name:"idV")]
+
     private ?Vehicule $idVeh = null;
 
     #[ORM\ManyToOne(inversedBy: 'reservations')]
+    #[Groups("reservations")]
     private ?User $idTrans = null;
+
+    #[Groups("reservations")]
+    private ?int $idvehicule ;
+
+    public function getIdvehicule(): ?int
+    {
+        return $this->idvehicule;
+    }
+
+    public function setIdvehicule(?int $idvehicule): self
+    {
+        $this->idvehicule = $idvehicule;
+
+        return $this;
+    }
 
     public function __construct()
     {

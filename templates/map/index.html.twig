@@ -14,13 +14,13 @@
     </div><!-- End Breadcrumbs -->
   <h1>Liste des colis:</h1>
   <ul>
-    {% for coli in colis %}
+   
       <li>
         {{ coli.adresseDestinataire }}
         {% set adresse = coli.adresseDestinataire %}
         {% set adresse = adresse ~ '+Tunisia' %}
-        <a href="{{ path('app_map', {'adresse': adresse}) }}">Afficher sur la carte</a>
-        <div id="map-{{ loop.index }}" style="height: 600px;"></div>
+        {# <a href="{{ path('app_map', {'adresse': adresse}) }}">Afficher sur la carte</a> #}
+        <div id="map-{{ coli.id }}" style="height: 600px;"></div>
       </li>
       <link href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css" rel="stylesheet">
       <script src="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js"></script>
@@ -34,7 +34,7 @@
           // Initialisation de la carte Mapbox
           mapboxgl.accessToken = 'pk.eyJ1IjoibWFsZWt6YWlkaSIsImEiOiJjbGVsZXdwdWIwdXM2M3luNGNqZXJybGJwIn0.pT6KgpnGNkMUdaZ-8vq08w';
           const map = new mapboxgl.Map({
-            container: 'map-{{ loop.index }}',
+            container: 'map-{{ coli.id }}',
             style: 'mapbox://styles/mapbox/satellite-streets-v12',
             center: [longitude, latitude],
             zoom: 14,
@@ -62,7 +62,7 @@ fetch(url)
         const route = data.routes[0].geometry;
         
         // Création de la source de données pour le trajet
-        map.addSource('route-{{ loop.index }}', {
+        map.addSource('route-{{ coli.id }}', {
           type: 'geojson',
           data: {
             type: 'Feature',
@@ -73,9 +73,9 @@ fetch(url)
 
         // Ajout de la couche de ligne pour représenter le trajet
         map.addLayer({
-          id: 'route-{{ loop.index }}',
+          id: 'route-{{ coli.id }}',
           type: 'line',
-          source: 'route-{{ loop.index }}',
+          source: 'route-{{ coli.id }}',
           layout: {
             'line-join': 'round',
             'line-cap': 'round'
@@ -90,5 +90,5 @@ fetch(url)
     });
 }
   </script>
-{% endfor %}
+
 {% endblock %}

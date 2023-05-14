@@ -17,13 +17,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Twilio\Rest\Client;
-
+use Dompdf\Dompdf;
+use Dompdf\Options; 
 #[Route('/documentexpedition')]
 class DocumentexpeditionController extends AbstractController
 {
     private $pdfService;
     private const ACCOUNT_SID = 'AC0643a8413f76b0e5bdd8ea93378281d0';
-    private const AUTH_TOKEN = '9c3b779ca3e6d698085acc81b4b78a1d';
+    private const AUTH_TOKEN = 'b514415f294c27d2e1b481ee26f28a9e';
     public function __construct(Pdf $pdfService)
     {
         $this->pdfService = $pdfService;
@@ -174,7 +175,7 @@ public function showcolis(Colis $coli): Response
 #[Route('/print/{id}', name: 'app_documentexpedition_print', methods: ['GET'])]
 public function printAction(Request $request, $id)
     {
-        // Récupération du document d'expédition à imprimer
+
         $documentExp = $this->getDoctrine()->getRepository(Documentexpedition::class)->find($id);
 
         // Récupération des informations du colis lié au document d'expédition
@@ -189,8 +190,25 @@ public function printAction(Request $request, $id)
         $poids = $colis->getPoids();
         $dateSignature = $documentExp->getDateSignature();
         $description = $documentExp->getDescription();
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $user = $this->getUser();
+        $pdfOptions = new Options();
+        // Police par défaut
+        $pdfOptions->set('defaultFont', 'Arial');
+        $pdfOptions->setIsRemoteEnabled(true);
 
-        // Utilisation de KnpSnappyBundle pour générer le PDF
+        // On instancie Dompdf
+        $dompdf = new Dompdf($pdfOptions);
+        $context = stream_context_create([
+            'ssl' => [
+                'verify_peer' => FALSE,
+                'verify_peer_name' => FALSE,
+                'allow_self_signed' => TRUE
+            ]
+        ]);
+        $dompdf->setHttpContext($context);
+
+        // On génère le html
         $html = $this->renderView('documentexpedition/print.html.twig', [
             'nomExpediteur' => $nomExpediteur,
             'adresseExpediteur' => $adresseExpediteur,
@@ -202,15 +220,19 @@ public function printAction(Request $request, $id)
             'description' => $description,
         ]);
 
-        $snappy = $this->pdfService;
-        // Ajout de l'option 'enable-local-file-access' pour ajouter l'acces des images
-        $snappy->setOption('enable-local-file-access', true); 
-        $filename = 'document_exp_'.$id.'.pdf';
-        
-        return new PdfResponse(
-            $snappy->getOutputFromHtml($html),
-            $filename
-        );
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+
+        // On génère un nom de fichier
+        $fichier = 'document-'. $description .'.pdf';
+
+        // On envoie le PDF au navigateur
+        $dompdf->stream($fichier, [
+            'Attachment' => true
+        ]);
+
+        return new Response();
     } 
 
 

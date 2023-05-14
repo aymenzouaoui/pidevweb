@@ -4,7 +4,7 @@ namespace App\Entity;
 namespace App\Entity;
 use App\Entity\Colis;
 use App\Entity\User;
-
+use Symfony\Component\Serializer\Annotation\Groups;
 use App\Repository\AnnoncesRepository;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -16,40 +16,48 @@ class Annonces
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(name:'id_annonce')]
+    #[Groups("annonces")]
     private ?int $id = null;
     
     //#[Assert\NotBlank(message: "veuillez selectionner le type .")]
     #[ORM\Column(length: 255)]
+    #[Groups("annonces")]
     private ?string $type = null;
 
     
     #[Assert\NotEqual(propertyPath: "ville_arr" ,message:"La ville d'arrivée doit être différente de la ville de départ.")]
     #[Assert\NotBlank(message: "veuillez selectionner la ville de depart .")]
     #[ORM\Column(length: 255)]
+    #[Groups("annonces")]
     private ?string $ville_dep = null;
 
     #[Assert\NotBlank(message: "veuillez selectionner la ville d'arrivée .")]
     #[ORM\Column(length: 255)]
+    #[Groups("annonces")]
     private ?string $ville_arr = null;
    
     #[Assert\NotBlank(message: "La date doit être renseignée.")]
     #[Assert\Regex('/^\d{4}-\d{2}-\d{2}$/',message: "La date de départ doit être au format YYYY-MM-DD.")]
     #[ORM\Column(length: 255)]
+    #[Groups("annonces")]
     private ?string $date_dep = null;
 
     #[Assert\NotBlank(message: "La date doit être renseignée.")]
     #[Assert\Regex('/^\d{4}-\d{2}-\d{2}$/',message: "La date de départ doit être au format YYYY-MM-DD.")]
     #[Assert\GreaterThan(propertyPath: "date_dep", message: "La date d'arrivée doit être après la date de départ.")]
     #[ORM\Column(length: 255)]
+    #[Groups("annonces")]
     private ?string $date_arr = null;
     
     #[Assert\NotBlank(message: "La description doit être renseignée.")]
     #[ORM\Column]
+    #[Groups("annonces")]
     private ?int $prix = null;
 
     #[Assert\NotBlank(message: "La description doit être renseignée.")]
     #[Assert\Length(min: 11, minMessage: "La description doit contenir au moins 11 caractères.")]
     #[ORM\Column(length: 255)]
+    #[Groups("annonces")]
     private ?string $description = null;
 
  
@@ -57,6 +65,7 @@ class Annonces
 
     #[ORM\ManyToOne(inversedBy: 'annonces')]
     #[ORM\JoinColumn(nullable: false, name: "ida_U")]
+    #[Groups("annonces")]
     private ?User $ida_U ;
 
 
@@ -65,6 +74,7 @@ class Annonces
    
     #[ORM\ManyToOne(inversedBy: 'annonces')]
     #[ORM\JoinColumn(nullable: false, name: "id_colis_id")]
+    #[Groups("annonces")]
 
     private ?Colis $idColis = null;
 

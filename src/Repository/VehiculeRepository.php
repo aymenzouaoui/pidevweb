@@ -68,4 +68,13 @@ class VehiculeRepository extends ServiceEntityRepository
            ->getOneOrNullResult()
        ;
   }
+
+  public function findByImmat(string $searchString): int
+  {
+      $qb = $this->createQueryBuilder('e')
+          ->select('e.idV')
+          ->where('e.immat LIKE :searchString')
+          ->setParameter('searchString', '%' . $searchString . '%');
+      return (int) $qb->getQuery()->getSingleScalarResult();
+  }
 }

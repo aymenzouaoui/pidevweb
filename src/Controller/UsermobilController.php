@@ -22,6 +22,8 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use DateTime;
+use Symfony\Component\Validator\Constraints\Email;
 
 
 #[Route('/userm')]
@@ -71,18 +73,35 @@ class UsermobilController extends AbstractController
         $user->setPrenom($req->get('prenom'));
       
       
+      
         $user->setCin($req->get('cin'));
-        $user->setPassword($req->get('password'));
-        $user->setDateNaissance(new \DateTime());
-        $roles = [];
+        $user->setPassword(
+            $userPasswordHasher->hashPassword(
+                $user,
+                $req->get('password' )
+            )
+        );
+       // $user->setPassword($req->get('password'));
+            
        
+        $dateDebString = $req->get("date_n");
+        $dateDeb = DateTime::createFromFormat('Y-m-d', $dateDebString);
+        $user->setDateNaissance($dateDeb);
+       
+        if($req->get('roles')=="a"){
+        $roles = ["ROLE_USER"];}
+        if($req->get('roles')=="b") {
+        $roles = ["ROLE_TRANSPORTEUR"];}
+        else{
+        $roles = ["ROLE_ADMIN"];
+        }
+
         $user->setRoles($roles);
         $user->setEmail($req->get('email'));
         $user->setNumtel($req->get('numtel'));
         $user->setAdress($req->get('adress'));
       
 
-            
             $user->setImage("http://localhost/img/useravatar.jpg");
             $token = generateToken();
             $user->setToken($token);
@@ -95,7 +114,7 @@ class UsermobilController extends AbstractController
             dump($user->getRoles());
             die("end"); */
            
-
+            
             $em->persist($user);
             $em->flush();
             
@@ -202,4 +221,5 @@ class UsermobilController extends AbstractController
         return new Response($retour);
     
     }
-}
+
+    }

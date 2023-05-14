@@ -65,9 +65,14 @@
                             <form action="{{ path('livraison_confirm', {'id': coli.id}) }}" method="post">
                                 <button type="submit" class="btn btn-primary" onsubmit="return confirm('Vous etes sure de confirmer la livraison ? La livraison se fait qu'une seule fois');">Confirmer la livraison</button>
                             </form>
+                            <br>
+                             
                         {% endif %}
+                        <form action="{{ path('app_map', {'id': coli.id}) }}" method="post">
+                                <button type="submit" class="btn btn-primary" >Voir le plus court chemin</button>
+                           
                         <a href="{{ path('app_documentexpedition_index') }}" class="btn btn-secondary"  onsubmit="return confirm('Vous etes sure de confirmer la livraison ? La livraison se fait qu'une seule fois');">Retour à la liste</a>
-                    </div>
+                    </form> </div>
                 </div>
             </div>
         </div>

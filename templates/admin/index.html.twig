@@ -71,7 +71,7 @@
 										<td>{{ user.token }}</td>
 										<td>{{ user.score }}</td>
 										<td>{{ user.numtel }}</td>
-										<td>{# {{ user.image }} #}	<img src="{{user.image}}" alt="Admin" class="rounded-circle p-1 bg-primary" width="50" height="50">
+										<td><img src="{{user.image}}" alt="Admin" class="rounded-circle p-1 bg-primary" width="50" height="50">
 										</td>
 										<td>{{ user.compteEx ? user.compteEx|date('Y-m-d') : '' }}</td>
 										<td>{{ user.tokenEx ? user.tokenEx|date('Y-m-d') : '' }}</td>
@@ -123,7 +123,7 @@ $('#t tbody#searchtab').empty();
 $.each(JSON.parse(retour), function (i, obj) {
 $('#t tbody#all').hide();
 
-$('#t tbody#searchtab').append('<tr><td> ' + obj.email + ' </td><td>' + obj.roles[0] + '</td><td>' + obj.password + '</td><td>' + obj.nom + '</td><td>' + obj.prenom + '</td><td>' + obj.adress + '</td><td>' + obj.cin + '</td><td>' + obj.dateNaissance + '</td><td>' + obj.dateCreationC + '</td><td>' + obj.status + '</td><td>' + obj.token + '</td><td>' + obj.score + '</td><td>' + obj.numtel + '</td><td>{# {{ user.image }} #}	<img src="{{'+obj.image+'}}" alt="Admin" class="rounded-circle p-1 bg-primary" width="50" height="70"></td><td>' + obj.compteEx + '</td><td>' + obj.tokenEx + '</td><td><a href="' + obj.id + 'edit/">modifier</a> </br><a	href="' + obj.id + 'delete/">supprimer</a></td></tr>');
+$('#t tbody#searchtab').append('<tr><td> ' + obj.email + ' </td><td>' + obj.roles[0] + '</td><td>' + obj.password + '</td><td>' + obj.nom + '</td><td>' + obj.prenom + '</td><td>' + obj.adress + '</td><td>' + obj.cin + '</td><td>' + obj.dateNaissance + '</td><td>' + obj.dateCreationC + '</td><td>' + obj.status + '</td><td>' + obj.token + '</td><td>' + obj.score + '</td><td>' + obj.numtel + '</td><td><img src="' + obj.image + '" alt="Admin" class="rounded-circle p-1 bg-primary" width="50" height="70"></td><td>' + obj.compteEx + '</td><td>' + obj.tokenEx + '</td><td><a href="edit/' + obj.id + '">Edit</a> </br><a	href="' + obj.id + '">Afficher</a></td></tr>');
 });
 } else {
 $('#t tbody#all').show();
