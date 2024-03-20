@@ -30,35 +30,34 @@ MySQL or any compatible database
 Steps
 Clone the repository
 
-bash
-Copy code
+
+
 git clone https://github.com/aymenzouaoui/pidevweb.git
 Navigate to the project directory
 
-bash
-Copy code
+
+
 cd mon-projet
 Install dependencies
 
-bash
-Copy code
+
+
 composer install
 Configure the database in .env
 
 Create the database
 
-bash
-Copy code
+
+
 php bin/console doctrine:database:create
 Run migrations
 
-bash
-Copy code
+
 php bin/console doctrine:migrations:migrate
 Start the Symfony server
 
-bash
-Copy code
+
+
 symfony serve
 Access the application at the URL provided by Symfony.
 
