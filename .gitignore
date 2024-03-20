@@ -1,0 +1,53 @@
+# Ignore les fichiers de configuration et de dépendances
+/.php-version
+/.php_cs.cache
+/.php_cs.local
+/.phpstorm.meta.php
+/.idea
+/.vscode
+/composer.phar
+/vendor/
+/.env.local
+/.env.local.php
+/.env.*
+/phpunit.xml
+/phpunit.xsd
+/phpunit-coverage.xml
+/phpunit-coverage-filter.php
+/phpunit-result.xml
+/.phpunit.result.cache
+/.phpunit.cache
+/.phpunit.testdox.cache
+/var/
+/.phpunit
+/.phpunit.result.cache
+/.phpunit.cache
+/.phpunit.testdox.cache
+/public/bundles/
+/public/build/
+/public/uploads/
+/node_modules/
+/web/
+/public/bundles/
+/public/build/
+/public/uploads/
+/var/
+/var/cache/*
+!/var/cache/.gitkeep
+/var/log/*
+!/var/log/.gitkeep
+/var/sessions/*
+!/var/sessions/.gitkeep
+
+# Ignore les fichiers d'environnement
+.env
+.env.local
+.env.*.local
+
+# Ignore les fichiers de sauvegarde et temporaires
+*.swp
+*~
+/.DS_Store
+
+# Ignore les fichiers de configuration spécifiques à l'utilisateur
+/.php_cs
