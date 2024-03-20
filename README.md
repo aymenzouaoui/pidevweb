@@ -61,16 +61,26 @@ Start the Symfony server
 symfony serve
 Access the application at the URL provided by Symfony.
 
-Usage 💻
-Once the server is running, navigate to the provided local URL to start managing your shipments and deliveries. Utilize the dashboard for comprehensive parcel management.
+💻 Usage
+Once the application is launched, navigate to amena's web interface to manage your shipments and deliveries. Use the dashboard to efficiently track and manage parcels.
 
-Contributing 🤝
-Contributions make the open source community an amazing place to learn, inspire, and create. Any contributions you make are greatly appreciated.
+🌟 Features
+Carrier Choice: Customers can choose from available carriers for their parcel delivery.
+Real-time Tracking: Provides the ability to track the status and location of parcels in real-time.
+Shipment Management: Allows customers to refuse a carrier and reassign the parcel to another if necessary.
+Intuitive User Interface: Offers a smooth and easy-to-navigate user experience for both customers and carriers.
+🙌 Contributing
+Your contribution is what makes the open-source community an incredible place to learn, inspire, and create. All contributions are greatly appreciated.
 
-Please refer to CONTRIBUTING.md for more information.
+To contribute to amena, please follow these steps:
 
-License 📄
+Fork the project.
+Create your feature branch (git checkout -b feature/AmazingFeature).
+Commit your changes (git commit -m 'Add some AmazingFeature').
+Push to the branch (git push origin feature/AmazingFeature).
+Open a Pull Request.
+📜 License
 Distributed under the MIT License. See LICENSE for more information.
 
-Contact 📞
-Aymen Zouaoui - AYMEN.ZOUAOUI@ESPRIT.TN
+📞 Contact
+For any questions or suggestions, do not hesitate to contact Aymen Zouaoui.
